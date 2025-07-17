@@ -1,0 +1,28 @@
+# Core Django and API framework
+Django==4.2.7
+djangorestframework==3.14.0
+
+# Database and caching
+psycopg2-binary==2.9.7
+redis==4.6.0
+
+# Background task processing
+celery==5.3.1
+
+# Data processing and Excel handling
+pandas==2.0.3
+openpyxl==3.1.2
+
+# Date utilities
+python-dateutil==2.8.2
+
+# Web server for production
+gunicorn==21.2.0
+
+# Development and testing
+Faker==20.1.0
+coverage==7.3.2
+
+# Security and configuration
+python-decouple==3.8
+django-cors-headers==4.3.1

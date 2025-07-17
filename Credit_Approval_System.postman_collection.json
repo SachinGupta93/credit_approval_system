@@ -1,0 +1,254 @@
+{
+	"info": {
+		"_postman_id": "credit-approval-system",
+		"name": "Credit Approval System API",
+		"description": "Complete API collection for Credit Approval System with all endpoints and test cases",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "customer_id",
+			"value": "82",
+			"type": "string"
+		},
+		{
+			"key": "loan_id",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "1. Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/health/",
+					"host": ["{{base_url}}"],
+					"path": ["health", ""]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. API Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/status",
+					"host": ["{{base_url}}"],
+					"path": ["status"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Register Customer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 201) {",
+							"    const response = pm.response.json();",
+							"    pm.collectionVariables.set('customer_id', response.customer_id);",
+							"    console.log('Customer ID set to:', response.customer_id);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"age\": 30,\n    \"monthly_income\": 50000,\n    \"phone_number\": 9876543210\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/register",
+					"host": ["{{base_url}}"],
+					"path": ["register"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Check Loan Eligibility",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customer_id\": {{customer_id}},\n    \"loan_amount\": 100000,\n    \"interest_rate\": 10.5,\n    \"tenure\": 24\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/check-eligibility",
+					"host": ["{{base_url}}"],
+					"path": ["check-eligibility"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Create Loan",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 201) {",
+							"    const response = pm.response.json();",
+							"    pm.collectionVariables.set('loan_id', response.loan_id);",
+							"    console.log('Loan ID set to:', response.loan_id);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customer_id\": {{customer_id}},\n    \"loan_amount\": 100000,\n    \"interest_rate\": 12.0,\n    \"tenure\": 24\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/create-loan",
+					"host": ["{{base_url}}"],
+					"path": ["create-loan"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. View Loan Details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/view-loan/{{loan_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["view-loan", "{{loan_id}}"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7. View Customer Loans",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/view-loans/{{customer_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["view-loans", "{{customer_id}}"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "8. Customer Credit Score",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/customer/{{customer_id}}/credit-score",
+					"host": ["{{base_url}}"],
+					"path": ["customer", "{{customer_id}}", "credit-score"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test with Existing Customer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customer_id\": 1,\n    \"loan_amount\": 50000,\n    \"interest_rate\": 8.0,\n    \"tenure\": 12\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/check-eligibility",
+					"host": ["{{base_url}}"],
+					"path": ["check-eligibility"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Error Test - Invalid Customer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customer_id\": 99999,\n    \"loan_amount\": 50000,\n    \"interest_rate\": 8.0,\n    \"tenure\": 12\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/check-eligibility",
+					"host": ["{{base_url}}"],
+					"path": ["check-eligibility"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Error Test - Duplicate Phone",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Smith\",\n    \"age\": 25,\n    \"monthly_income\": 40000,\n    \"phone_number\": 9876543210\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/register",
+					"host": ["{{base_url}}"],
+					"path": ["register"]
+				}
+			},
+			"response": []
+		}
+	]
+}

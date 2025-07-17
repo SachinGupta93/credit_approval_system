@@ -1,0 +1,157 @@
+[
+  {
+    "test": "Health Check",
+    "status": "PASS",
+    "response_code": 200,
+    "timestamp": "2025-07-17T23:50:16.822546",
+    "response_data": {
+      "status": "healthy",
+      "service": "credit_approval_system"
+    },
+    "error": null
+  },
+  {
+    "test": "API Status",
+    "status": "PASS",
+    "response_code": 200,
+    "timestamp": "2025-07-17T23:50:18.890437",
+    "response_data": {
+      "status": "healthy",
+      "timestamp": "2025-07-17T18:20:18.890437+00:00",
+      "version": "1.0.0",
+      "database": "connected",
+      "services": {
+        "customers": 53,
+        "loans": 162,
+        "credit_scores": 3
+      }
+    },
+    "error": null
+  },
+  {
+    "test": "Customer Registration",
+    "status": "PASS",
+    "response_code": 201,
+    "timestamp": "2025-07-17T23:50:20.955495",
+    "response_data": {
+      "customer_id": 85,
+      "name": "Test User",
+      "age": 30,
+      "monthly_income": "50000.00",
+      "approved_limit": "1800000.00",
+      "phone_number": 9868068709
+    },
+    "error": null
+  },
+  {
+    "test": "Duplicate Phone Registration",
+    "status": "PASS",
+    "response_code": 400,
+    "timestamp": "2025-07-17T23:50:22.994657",
+    "response_data": null,
+    "error": null
+  },
+  {
+    "test": "Loan Eligibility Check",
+    "status": "PASS",
+    "response_code": 200,
+    "timestamp": "2025-07-17T23:50:25.044588",
+    "response_data": {
+      "customer_id": 85,
+      "approval": true,
+      "interest_rate": "10.50",
+      "corrected_interest_rate": "12.00",
+      "tenure": 24,
+      "monthly_installment": "4707.35"
+    },
+    "error": null
+  },
+  {
+    "test": "Loan Creation",
+    "status": "PASS",
+    "response_code": 201,
+    "timestamp": "2025-07-17T23:50:27.120895",
+    "response_data": {
+      "loan_id": "50c66588-61ff-4838-9f89-5c109f8f0669",
+      "customer_id": 85,
+      "loan_approved": true,
+      "message": "Loan approved successfully",
+      "monthly_installment": "4707.35"
+    },
+    "error": null
+  },
+  {
+    "test": "View Loan Details",
+    "status": "PASS",
+    "response_code": 200,
+    "timestamp": "2025-07-17T23:50:29.141435",
+    "response_data": {
+      "loan_id": "50c66588-61ff-4838-9f89-5c109f8f0669",
+      "customer": {
+        "id": 85,
+        "first_name": "Test",
+        "last_name": "User",
+        "phone_number": 9868068709,
+        "age": 30
+      },
+      "loan_amount": "100000.00",
+      "interest_rate": "12.00",
+      "tenure": 24,
+      "monthly_installment": "4707.35"
+    },
+    "error": null
+  },
+  {
+    "test": "View Customer Loans",
+    "status": "PASS",
+    "response_code": 200,
+    "timestamp": "2025-07-17T23:50:31.184439",
+    "response_data": [
+      {
+        "loan_id": "50c66588-61ff-4838-9f89-5c109f8f0669",
+        "loan_amount": "100000.00",
+        "interest_rate": "12.00",
+        "repayments_left": 24,
+        "monthly_installment": "4707.35"
+      }
+    ],
+    "error": null
+  },
+  {
+    "test": "Customer Credit Score",
+    "status": "PASS",
+    "response_code": 200,
+    "timestamp": "2025-07-17T23:50:33.231781",
+    "response_data": {
+      "customer_id": 85,
+      "credit_score": 41,
+      "score_grade": "Good",
+      "components": {
+        "past_loans_score": 50.0,
+        "loan_volume_score": 0.0,
+        "current_year_score": 30.0,
+        "credit_utilization_score": 100.0
+      },
+      "calculated_at": "2025-07-17T18:20:27.092943+00:00"
+    },
+    "error": null
+  },
+  {
+    "test": "Invalid Customer Eligibility",
+    "status": "PASS",
+    "response_code": 400,
+    "timestamp": "2025-07-17T23:50:35.278533",
+    "response_data": null,
+    "error": null
+  },
+  {
+    "test": "Existing Customer Eligibility",
+    "status": "PASS",
+    "response_code": 400,
+    "timestamp": "2025-07-17T23:50:39.359478",
+    "response_data": {
+      "note": "Business rule validation triggered"
+    },
+    "error": null
+  }
+]
