@@ -16,6 +16,9 @@ from . import views
 
 # API URL patterns
 urlpatterns = [
+    # Welcome/root endpoint
+    path('', views.welcome, name='welcome'),
+    
     # Main API endpoints as per requirements
     path('register', views.register_customer, name='register_customer'),
     path('check-eligibility', views.check_loan_eligibility, name='check_loan_eligibility'),

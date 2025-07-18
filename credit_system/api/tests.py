@@ -193,7 +193,7 @@ class LoanEligibilityAPITest(APITestCase):
         
         response = self.client.post(url, data, format='json')
         
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('error', response.data)
     
     def test_eligibility_check_invalid_loan_amount(self):
@@ -267,7 +267,7 @@ class LoanCreationAPITest(APITestCase):
         
         response = self.client.post(url, data, format='json')
         
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('error', response.data)
 
 

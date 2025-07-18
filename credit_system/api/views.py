@@ -15,6 +15,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from django.http import Http404
 from django.db import transaction
 from decimal import Decimal
 from datetime import datetime, timedelta
@@ -36,6 +37,64 @@ from credit_system.api.serializers import (
 from credit_system.api.credit_scoring import LoanEligibilityEvaluator
 
 logger = logging.getLogger(__name__)
+
+
+@api_view(['GET'])
+def welcome(request):
+    """
+    Welcome endpoint that provides API documentation and available endpoints.
+    
+    This serves as the root endpoint (/) and provides information about
+    all available API endpoints in the credit approval system.
+    """
+    return Response({
+        'message': 'Welcome to Credit Approval System API',
+        'version': '1.0.0',
+        'service': 'credit_approval_system',
+        'endpoints': {
+            'health': {
+                'url': '/health/',
+                'method': 'GET',
+                'description': 'Health check endpoint'
+            },
+            'register': {
+                'url': '/register',
+                'method': 'POST',
+                'description': 'Register a new customer'
+            },
+            'check_eligibility': {
+                'url': '/check-eligibility',
+                'method': 'POST',
+                'description': 'Check loan eligibility for a customer'
+            },
+            'create_loan': {
+                'url': '/create-loan',
+                'method': 'POST',
+                'description': 'Create a new loan'
+            },
+            'view_loan': {
+                'url': '/view-loan/<loan_id>',
+                'method': 'GET',
+                'description': 'View details of a specific loan'
+            },
+            'view_customer_loans': {
+                'url': '/view-loans/<customer_id>',
+                'method': 'GET',
+                'description': 'View all loans for a customer'
+            },
+            'status': {
+                'url': '/status',
+                'method': 'GET',
+                'description': 'Get API status and statistics'
+            },
+            'customer_credit_score': {
+                'url': '/customer/<customer_id>/credit-score',
+                'method': 'GET',
+                'description': 'Get detailed credit score for a customer'
+            }
+        },
+        'documentation': 'Visit the individual endpoints for detailed API documentation'
+    })
 
 
 @api_view(['POST'])
@@ -361,7 +420,7 @@ def view_loan(request, loan_id):
             status=status.HTTP_200_OK
         )
         
-    except Loan.DoesNotExist:
+    except Http404:
         logger.warning(f"Loan not found: {loan_id}")
         return Response(
             {
@@ -419,7 +478,7 @@ def view_customer_loans(request, customer_id):
             status=status.HTTP_200_OK
         )
         
-    except Customer.DoesNotExist:
+    except Http404:
         logger.warning(f"Customer not found: {customer_id}")
         return Response(
             {

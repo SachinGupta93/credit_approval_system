@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.11-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -17,16 +17,14 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project
-COPY . /app/
+# Copy project files (excluding venv and other unnecessary files)
+COPY manage.py /app/
+COPY credit_system/ /app/credit_system/
+COPY data/ /app/data/
+COPY entrypoint.sh /app/
 
-# Create entrypoint script
-RUN echo '#!/bin/bash' > /app/entrypoint.sh && \
-    echo 'python manage.py makemigrations' >> /app/entrypoint.sh && \
-    echo 'python manage.py migrate' >> /app/entrypoint.sh && \
-    echo 'python manage.py load_initial_data' >> /app/entrypoint.sh && \
-    echo 'exec "$@"' >> /app/entrypoint.sh && \
-    chmod +x /app/entrypoint.sh
+# Make entrypoint script executable
+RUN chmod +x /app/entrypoint.sh
 
 ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
